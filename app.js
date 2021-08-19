@@ -1,10 +1,15 @@
 const express = require('express')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
+const path = require('path')
 
 const usersRoute = require('./routes/user')
 const decksRoute = require('./routes/deck')
 const db = require('./config/db');
+
+
+// config enviroment
+require('dotenv').config();
 
 
 const app = express();

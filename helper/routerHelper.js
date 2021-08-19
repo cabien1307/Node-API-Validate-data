@@ -73,6 +73,20 @@ const schemas = {
         owner: Joi.string().regex(/^[0-9a-fA-F]{24}$/)
     }),
 
+    // POST
+    authSignUpSchema: Joi.object({
+        firstName: Joi.string().min(2).required(),
+        lastName: Joi.string().min(2).required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().min(6).required(),
+    }),
+
+    // POST
+    authSignInSchema: Joi.object({
+        email: Joi.string().email().required(),
+        password: Joi.string().min(6).required(),
+    }),
+
 }
 
 module.exports = {

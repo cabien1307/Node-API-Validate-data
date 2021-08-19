@@ -1,6 +1,18 @@
 const User = require('../models/User');
 const Deck = require('../models/Deck');
+const jwt = require('jsonwebtoken')
+const { JWT_KEY } = require('../config')
 
+
+
+const encodeToken = (userID) => {
+    return jwt.sign({
+        iss: 'CaBien',
+        sub: userID,
+        iat: new Date().getTime(),
+        exp: new Date().setDate(new Date().getDate() + 3)
+    }, JWT_KEY)
+}
 
 const index = async (req, res, next) => {
 
@@ -78,8 +90,56 @@ const getUserDeck = async (req, res, next) => {
     return res.status(200).json(user.decks)
 }
 
+const signUp = async (req, res, next) => {
+    const { firstName, lastName, email, password } = req.value.body;
 
 
+    // Check if user has existed 
+    const foundUser = await User.findOne({ email })
+    console.log('found user:', foundUser);
+
+    if (foundUser) {
+        return res.status(403).json({
+            msg: "User has been already !"
+        });
+    }
+
+    // Create new user
+    const newUser = new User({ firstName, lastName, email, password });
+    const result = await newUser.save();
+
+    // create token
+    const token = encodeToken(newUser._id)
+    res.setHeader('Authorization', token)
+
+    return res.status(201).json(result);
+}
+
+const signIn = async (req, res, next) => {
+    // assign token
+    const token = encodeToken(req.user._id)
+    res.setHeader('Authorization', token)
+
+    return res.status(200).json({ success: true })
+}
+
+const secret = async (req, res, next) => {
+    return res.status(200).json({ resources: true })
+}
+
+const authGoogle = async (req, res, next) => {
+    const token = encodeToken(req.user._id)
+    res.setHeader('Authorization', token)
+
+    return res.status(201).json({ success: true })
+}
+
+const authFacebook = async (req, res, next) => {
+    const token = encodeToken(req.user._id)
+    res.setHeader('Authorization', token)
+
+    return res.status(201).json({ success: true })
+}
 module.exports = {
     index,
     newUser,
@@ -87,5 +147,10 @@ module.exports = {
     replaceUser,
     updateUser,
     getUserDeck,
-    newUserDeck
+    newUserDeck,
+    signUp,
+    signIn,
+    secret,
+    authGoogle,
+    authFacebook,
 }

@@ -1,0 +1,9 @@
+{
+    "env": {
+        "JWT_KEY": "NodeJSAuthentication",
+        "GOOGLE_CLIENT_ID": "244225327361-fpn0fgojaubb0l7vvb2d6h48cmdub374.apps.googleusercontent.com",
+        "GOOGLE_CLIENT_SECRET": "4VOnl3mpBqntpFo-KC8UVzuU",
+        "FACEBOOK_CLIENT_ID": "593267645168576",
+        "FACEBOOK_CLIENT_SECRET": "b235cdf5cf3e5c2b7cd3148383ebfcdb"
+    }
+}
